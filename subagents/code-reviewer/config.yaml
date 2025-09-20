@@ -1,0 +1,212 @@
+name: "code-reviewer"
+description: "Code quality and security specialist for comprehensive code analysis and review"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Glob"
+    - "Grep"
+    - "Bash"
+    - "TodoWrite"
+    - "WebFetch"
+  permissions:
+    read_access: ["**/*"]
+    write_access:
+      - "reports/code/**/*"
+      - "docs/code-quality/**/*"
+      - "quality-reports/**/*"
+      - ".github/workflows/code-quality.yml"
+    tool_restrictions:
+      - "no_source_code_modifications"
+      - "read_only_for_application_files"
+      - "limit_bash_to_analysis_commands"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "Static code analysis and linting"
+  - "Security vulnerability assessment"
+  - "Code complexity and maintainability analysis"
+  - "Test coverage evaluation"
+  - "Performance bottleneck identification"
+  - "Best practices compliance verification"
+  - "Documentation quality assessment"
+  - "Dependency security analysis"
+  - "Code smell detection"
+  - "Architecture pattern validation"
+
+# Analysis tools and frameworks
+analysis_tools:
+  static_analysis:
+    - "ESLint"
+    - "Pylint"
+    - "SonarQube"
+    - "CodeClimate"
+    - "Semgrep"
+    - "PMD"
+    - "Checkstyle"
+  security:
+    - "Bandit"
+    - "Safety"
+    - "Snyk"
+    - "OWASP Dependency Check"
+    - "CodeQL"
+    - "Trivy"
+    - "npm audit"
+  complexity:
+    - "Radon"
+    - "Complexity Report"
+    - "Halstead Metrics"
+    - "Cyclomatic Complexity"
+  test_coverage:
+    - "Jest"
+    - "Coverage.py"
+    - "Istanbul"
+    - "Jacoco"
+    - "Cobertura"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    review_request:
+      type: "object"
+      properties:
+        task_id: {"type": "string"}
+        repository_path: {"type": "string"}
+        branch_name: {"type": "string"}
+        files_changed: {"type": "array", "items": {"type": "string"}}
+        commit_hash: {"type": "string"}
+        review_scope: {"type": "string", "enum": ["full", "incremental", "security_only", "performance_only"]}
+        priority_areas: {"type": "array", "items": {"type": "string"}}
+    project_context:
+      type: "object"
+      properties:
+        language: {"type": "string"}
+        framework: {"type": "string"}
+        testing_framework: {"type": "string"}
+        build_tool: {"type": "string"}
+        deployment_target: {"type": "string"}
+        compliance_requirements: {"type": "array", "items": {"type": "string"}}
+    quality_standards:
+      type: "object"
+      properties:
+        test_coverage_threshold: {"type": "number", "minimum": 0, "maximum": 100}
+        complexity_threshold: {"type": "number"}
+        security_severity_threshold: {"type": "string"}
+        performance_requirements: {"type": "object"}
+
+output_schema:
+  type: "object"
+  properties:
+    review_summary:
+      type: "object"
+      properties:
+        overall_score: {"type": "number", "minimum": 0, "maximum": 100}
+        review_status: {"type": "string", "enum": ["approved", "approved_with_suggestions", "changes_required", "rejected"]}
+        total_issues: {"type": "number"}
+        critical_issues: {"type": "number"}
+        major_issues: {"type": "number"}
+        minor_issues: {"type": "number"}
+    code_quality_metrics:
+      type: "object"
+      properties:
+        maintainability_index: {"type": "number"}
+        cyclomatic_complexity: {"type": "number"}
+        test_coverage: {"type": "number"}
+        code_duplication: {"type": "number"}
+        technical_debt_ratio: {"type": "number"}
+    security_analysis:
+      type: "object"
+      properties:
+        vulnerabilities_found: {"type": "number"}
+        security_score: {"type": "number"}
+        high_risk_issues: {"type": "array"}
+        dependency_vulnerabilities: {"type": "array"}
+    performance_analysis:
+      type: "object"
+      properties:
+        performance_score: {"type": "number"}
+        bottlenecks_identified: {"type": "array"}
+        optimization_opportunities: {"type": "array"}
+    issues:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          issue_id: {"type": "string"}
+          severity: {"type": "string", "enum": ["critical", "major", "minor", "info"]}
+          category: {"type": "string"}
+          rule_id: {"type": "string"}
+          description: {"type": "string"}
+          file_path: {"type": "string"}
+          line_number: {"type": "number"}
+          column_number: {"type": "number"}
+          code_snippet: {"type": "string"}
+          recommendation: {"type": "string"}
+          effort_estimate: {"type": "string"}
+    recommendations:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          type: {"type": "string"}
+          priority: {"type": "string", "enum": ["high", "medium", "low"]}
+          description: {"type": "string"}
+          implementation_guide: {"type": "string"}
+          expected_benefit: {"type": "string"}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "code_implementation_completed"
+    - "pull_request_created"
+    - "security_review_requested"
+  dependencies:
+    - "implementation_complete"
+    - "tests_written"
+    - "build_successful"
+  next_agents:
+    - "coder-frontend"
+    - "coder-backend"
+    - "coder-infra"
+  outputs:
+    - path: "reports/code/{task_id}-code-review.md"
+      format: "markdown"
+    - path: "reports/code/{task_id}-security-analysis.json"
+      format: "json"
+    - path: "reports/code/{task_id}-quality-metrics.json"
+      format: "json"
+
+# Quality standards and thresholds
+quality_standards:
+  code_quality:
+    maintainability_index: 70
+    cyclomatic_complexity: 10
+    test_coverage: 80
+    code_duplication: 5
+    lines_per_function: 50
+    function_parameters: 5
+  security:
+    vulnerability_severity: "medium"
+    dependency_age_limit: 365  # days
+    secret_detection: true
+    input_validation: true
+    authentication_required: true
+  performance:
+    function_execution_time: 100  # milliseconds
+    memory_usage_limit: "512MB"
+    database_query_limit: 10
+    api_response_time: 200  # milliseconds
+  documentation:
+    function_documentation: 90  # percentage
+    class_documentation: 95  # percentage
+    api_documentation: 100  # percentage
+    readme_completeness: 90  # percentage
+  testing:
+    unit_test_coverage: 80
+    integration_test_coverage: 60
+    test_isolation: true
+    test_determinism: true
+    assertion_coverage: 90

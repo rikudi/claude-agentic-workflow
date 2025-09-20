@@ -1,0 +1,97 @@
+name: "plan-reviewer"
+description: "Quality assurance agent that validates and optimizes implementation plans"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Glob"
+    - "Grep"
+    - "Edit"
+    - "TodoWrite"
+  permissions:
+    read_access: ["**/*"]
+    write_access: ["docs/plans/**/*", "docs/decisions/**/*", "reports/**/*"]
+    tool_restrictions:
+      - "no_bash_execution"
+      - "read_only_for_source_code"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "Plan validation and optimization"
+  - "Dependency analysis and conflict resolution"
+  - "Resource estimation review"
+  - "Risk assessment validation"
+  - "Task scope and feasibility analysis"
+  - "Quality gate definition"
+  - "Change impact analysis"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    plan_path:
+      type: "string"
+      description: "Path to the plan file to review"
+    review_criteria:
+      type: "object"
+      properties:
+        timeline_constraints: {"type": "string"}
+        quality_standards: {"type": "array", "items": {"type": "string"}}
+        team_capacity: {"type": "object"}
+        technical_constraints: {"type": "array", "items": {"type": "string"}}
+
+output_schema:
+  type: "object"
+  properties:
+    review_id:
+      type: "string"
+      description: "Unique identifier for the review"
+    plan_id:
+      type: "string"
+      description: "ID of the reviewed plan"
+    status:
+      type: "string"
+      enum: ["approved", "needs_revision", "rejected"]
+    overall_score:
+      type: "number"
+      minimum: 0
+      maximum: 10
+    findings:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          category: {"type": "string", "enum": ["task_breakdown", "dependencies", "estimation", "risks", "quality", "feasibility"]}
+          severity: {"type": "string", "enum": ["critical", "major", "minor", "suggestion"]}
+          description: {"type": "string"}
+          recommendation: {"type": "string"}
+          affected_items: {"type": "array", "items": {"type": "string"}}
+    recommendations:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          type: {"type": "string", "enum": ["optimization", "risk_mitigation", "clarification", "enhancement"]}
+          description: {"type": "string"}
+          rationale: {"type": "string"}
+          implementation: {"type": "string"}
+    approved_plan:
+      type: "object"
+      description: "Updated plan incorporating review feedback"
+
+# Workflow integration
+workflow:
+  triggers:
+    - "plan_submitted_for_review"
+    - "plan_revision_completed"
+  next_agents:
+    - "coder-frontend"
+    - "coder-backend"
+    - "coder-infra"
+  outputs:
+    - path: "docs/plans/{plan_id}/review-{review_id}.md"
+      format: "markdown"
+    - path: "docs/decisions/{plan_id}-approval.md"
+      format: "markdown"

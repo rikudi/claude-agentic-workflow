@@ -1,0 +1,191 @@
+name: "ui-reviewer"
+description: "UI/UX quality assurance specialist for visual testing and user experience validation"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Glob"
+    - "Grep"
+    - "Bash"
+    - "TodoWrite"
+    - "WebFetch"
+  permissions:
+    read_access: ["**/*"]
+    write_access:
+      - "reports/ui/**/*"
+      - "tests/ui/**/*"
+      - "docs/ui/**/*"
+      - "screenshots/**/*"
+      - "accessibility-reports/**/*"
+    tool_restrictions:
+      - "no_source_code_modifications"
+      - "read_only_for_application_files"
+      - "limit_bash_to_testing_commands"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "Visual regression testing"
+  - "Accessibility compliance validation"
+  - "Cross-browser compatibility testing"
+  - "Responsive design verification"
+  - "User experience evaluation"
+  - "Performance testing (Core Web Vitals)"
+  - "Mobile experience validation"
+  - "Design system compliance"
+  - "Usability testing automation"
+  - "Screenshot comparison and analysis"
+
+# Testing tools and frameworks
+testing_tools:
+  visual_testing:
+    - "Playwright"
+    - "Puppeteer"
+    - "Cypress"
+    - "Percy"
+    - "Chromatic"
+  accessibility:
+    - "axe-core"
+    - "Lighthouse"
+    - "Pa11y"
+    - "WAVE"
+    - "Accessibility Insights"
+  performance:
+    - "Lighthouse"
+    - "WebPageTest"
+    - "GTmetrix"
+    - "PageSpeed Insights"
+    - "Core Web Vitals"
+  cross_browser:
+    - "BrowserStack"
+    - "Sauce Labs"
+    - "CrossBrowserTesting"
+    - "LambdaTest"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    review_request:
+      type: "object"
+      properties:
+        task_id: {"type": "string"}
+        application_url: {"type": "string"}
+        staging_url: {"type": "string"}
+        components_to_test: {"type": "array", "items": {"type": "string"}}
+        user_flows: {"type": "array", "items": {"type": "string"}}
+        device_targets: {"type": "array", "items": {"type": "string"}}
+        browser_targets: {"type": "array", "items": {"type": "string"}}
+        accessibility_level: {"type": "string", "enum": ["A", "AA", "AAA"]}
+    design_specifications:
+      type: "object"
+      properties:
+        design_system_url: {"type": "string"}
+        brand_guidelines: {"type": "object"}
+        responsive_breakpoints: {"type": "array"}
+        color_palette: {"type": "object"}
+        typography_scale: {"type": "object"}
+    baseline_artifacts:
+      type: "object"
+      properties:
+        baseline_screenshots: {"type": "array", "items": {"type": "string"}}
+        previous_audit_results: {"type": "object"}
+        performance_benchmarks: {"type": "object"}
+
+output_schema:
+  type: "object"
+  properties:
+    test_results:
+      type: "object"
+      properties:
+        visual_regression: {"type": "object"}
+        accessibility_audit: {"type": "object"}
+        performance_metrics: {"type": "object"}
+        cross_browser_results: {"type": "array"}
+        responsive_testing: {"type": "object"}
+        user_flow_validation: {"type": "array"}
+    issues_found:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          issue_id: {"type": "string"}
+          severity: {"type": "string", "enum": ["critical", "major", "minor", "suggestion"]}
+          category: {"type": "string"}
+          description: {"type": "string"}
+          screenshot: {"type": "string"}
+          steps_to_reproduce: {"type": "array", "items": {"type": "string"}}
+          expected_behavior: {"type": "string"}
+          actual_behavior: {"type": "string"}
+          affected_browsers: {"type": "array", "items": {"type": "string"}}
+          affected_devices: {"type": "array", "items": {"type": "string"}}
+    recommendations:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          type: {"type": "string"}
+          priority: {"type": "string", "enum": ["high", "medium", "low"]}
+          description: {"type": "string"}
+          implementation_notes: {"type": "string"}
+    artifacts:
+      type: "object"
+      properties:
+        screenshots: {"type": "array", "items": {"type": "string"}}
+        accessibility_reports: {"type": "array", "items": {"type": "string"}}
+        performance_reports: {"type": "array", "items": {"type": "string"}}
+        test_recordings: {"type": "array", "items": {"type": "string"}}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "ui_implementation_completed"
+    - "staging_deployment_ready"
+    - "design_review_requested"
+  dependencies:
+    - "frontend_implementation_complete"
+    - "staging_environment_deployed"
+    - "test_data_prepared"
+  next_agents:
+    - "coder-frontend"
+    - "code-reviewer"
+  outputs:
+    - path: "reports/ui/{task_id}-ui-review.md"
+      format: "markdown"
+    - path: "reports/ui/{task_id}-accessibility.json"
+      format: "json"
+    - path: "reports/ui/{task_id}-performance.json"
+      format: "json"
+
+# Quality standards and thresholds
+quality_standards:
+  accessibility:
+    wcag_level: "AA"
+    automated_test_pass_rate: 100
+    manual_review_required: true
+    color_contrast_ratio: 4.5
+    keyboard_navigation: "full_support"
+  performance:
+    lighthouse_score:
+      performance: 85
+      accessibility: 95
+      best_practices: 85
+      seo: 85
+    core_web_vitals:
+      lcp_threshold: 2.5  # seconds
+      fid_threshold: 100  # milliseconds
+      cls_threshold: 0.1
+    page_load_time: 3.0  # seconds
+  visual_quality:
+    pixel_difference_threshold: 0.1  # percentage
+    layout_shift_tolerance: 5  # pixels
+    cross_browser_consistency: 95  # percentage
+  responsive_design:
+    breakpoints:
+      - 320   # mobile small
+      - 768   # tablet
+      - 1024  # desktop small
+      - 1440  # desktop large
+    orientation_support: ["portrait", "landscape"]
+    touch_target_size: 44  # pixels minimum

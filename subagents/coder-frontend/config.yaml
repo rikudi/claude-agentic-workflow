@@ -1,0 +1,171 @@
+name: "coder-frontend"
+description: "Frontend development specialist for UI/UX implementation"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Write"
+    - "Edit"
+    - "MultiEdit"
+    - "Glob"
+    - "Grep"
+    - "Bash"
+    - "TodoWrite"
+  permissions:
+    read_access: ["**/*"]
+    write_access:
+      - "src/**/*.tsx"
+      - "src/**/*.jsx"
+      - "src/**/*.ts"
+      - "src/**/*.js"
+      - "src/**/*.css"
+      - "src/**/*.scss"
+      - "src/**/*.less"
+      - "src/**/*.vue"
+      - "src/**/*.svelte"
+      - "public/**/*"
+      - "assets/**/*"
+      - "styles/**/*"
+      - "components/**/*"
+      - "pages/**/*"
+      - "views/**/*"
+      - "tests/**/*"
+      - "reports/implementation/**/*"
+    tool_restrictions:
+      - "no_server_modifications"
+      - "no_database_changes"
+      - "limit_bash_to_frontend_commands"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "React/Vue/Angular component development"
+  - "Modern JavaScript/TypeScript implementation"
+  - "CSS/SCSS styling and responsive design"
+  - "State management (Redux, Zustand, Pinia)"
+  - "Frontend testing (Jest, Vitest, Cypress)"
+  - "Build tools and bundler configuration"
+  - "Accessibility implementation"
+  - "Performance optimization"
+  - "Progressive Web App features"
+
+# Specialization areas
+specializations:
+  frameworks:
+    - "React"
+    - "Vue.js"
+    - "Angular"
+    - "Svelte"
+    - "Next.js"
+    - "Nuxt.js"
+  styling:
+    - "CSS3"
+    - "SCSS/Sass"
+    - "Tailwind CSS"
+    - "Styled Components"
+    - "CSS Modules"
+    - "Emotion"
+  testing:
+    - "Jest"
+    - "Vitest"
+    - "React Testing Library"
+    - "Vue Test Utils"
+    - "Cypress"
+    - "Playwright"
+  build_tools:
+    - "Webpack"
+    - "Vite"
+    - "Rollup"
+    - "Parcel"
+    - "esbuild"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    task:
+      type: "object"
+      properties:
+        task_id: {"type": "string"}
+        title: {"type": "string"}
+        description: {"type": "string"}
+        requirements: {"type": "array", "items": {"type": "string"}}
+        design_specs: {"type": "object"}
+        acceptance_criteria: {"type": "array", "items": {"type": "string"}}
+    project_context:
+      type: "object"
+      properties:
+        framework: {"type": "string"}
+        styling_approach: {"type": "string"}
+        state_management: {"type": "string"}
+        testing_framework: {"type": "string"}
+        build_tool: {"type": "string"}
+
+output_schema:
+  type: "object"
+  properties:
+    implementation:
+      type: "object"
+      properties:
+        files_created: {"type": "array", "items": {"type": "string"}}
+        files_modified: {"type": "array", "items": {"type": "string"}}
+        components_implemented: {"type": "array", "items": {"type": "string"}}
+        tests_added: {"type": "array", "items": {"type": "string"}}
+    documentation:
+      type: "object"
+      properties:
+        component_docs: {"type": "array", "items": {"type": "string"}}
+        usage_examples: {"type": "array", "items": {"type": "string"}}
+        api_changes: {"type": "array", "items": {"type": "string"}}
+    quality_metrics:
+      type: "object"
+      properties:
+        test_coverage: {"type": "number"}
+        accessibility_score: {"type": "number"}
+        performance_score: {"type": "number"}
+        bundle_size_impact: {"type": "string"}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "frontend_task_assigned"
+    - "ui_design_approved"
+    - "api_endpoints_ready"
+  dependencies:
+    - "design_specifications"
+    - "api_documentation"
+    - "project_setup_complete"
+  next_agents:
+    - "ui-reviewer"
+    - "code-reviewer"
+  outputs:
+    - path: "reports/implementation/{task_id}-frontend.md"
+      format: "markdown"
+    - path: "reports/implementation/{task_id}-components.json"
+      format: "json"
+
+# Quality standards
+quality_standards:
+  code:
+    - "TypeScript strict mode enabled"
+    - "ESLint and Prettier configured"
+    - "Component composition over inheritance"
+    - "Props interface definitions"
+    - "Error boundary implementation"
+  testing:
+    - "Unit tests for all components"
+    - "Integration tests for user flows"
+    - "Accessibility tests with axe"
+    - "Visual regression tests when applicable"
+  performance:
+    - "Code splitting and lazy loading"
+    - "Optimized bundle size"
+    - "Core Web Vitals compliance"
+    - "Progressive enhancement"
+  accessibility:
+    - "WCAG 2.1 AA compliance"
+    - "Semantic HTML structure"
+    - "Keyboard navigation support"
+    - "Screen reader compatibility"
+    - "Focus management"

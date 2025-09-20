@@ -1,0 +1,107 @@
+name: "planner"
+description: "Strategic planning agent that breaks down requirements into implementable tasks"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Glob"
+    - "Grep"
+    - "WebFetch"
+    - "TodoWrite"
+  permissions:
+    read_access: ["**/*"]
+    write_access: ["docs/plans/**/*", "reports/implementation/**/*"]
+    tool_restrictions:
+      - "no_bash_execution"
+      - "no_file_edits_outside_plans"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "Requirements analysis and breakdown"
+  - "Technical architecture planning"
+  - "Task dependency mapping"
+  - "Technology stack recommendations"
+  - "Risk assessment and mitigation planning"
+  - "Success criteria definition"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    requirements:
+      type: "string"
+      description: "Product requirements or feature description"
+    constraints:
+      type: "object"
+      properties:
+        timeline: {"type": "string"}
+        budget: {"type": "string"}
+        technology_stack: {"type": "array", "items": {"type": "string"}}
+        team_size: {"type": "integer"}
+    existing_codebase:
+      type: "object"
+      properties:
+        repository_url: {"type": "string"}
+        technology_stack: {"type": "array", "items": {"type": "string"}}
+        architecture_notes: {"type": "string"}
+
+output_schema:
+  type: "object"
+  properties:
+    plan_id:
+      type: "string"
+      description: "Unique identifier for the plan"
+    phases:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          phase_id: {"type": "string"}
+          name: {"type": "string"}
+          description: {"type": "string"}
+          estimated_duration: {"type": "string"}
+          tasks:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                task_id: {"type": "string"}
+                title: {"type": "string"}
+                description: {"type": "string"}
+                estimated_effort: {"type": "string"}
+                dependencies: {"type": "array", "items": {"type": "string"}}
+                success_criteria: {"type": "array", "items": {"type": "string"}}
+                assigned_agent: {"type": "string"}
+                required_tools: {"type": "array", "items": {"type": "string"}}
+    architecture:
+      type: "object"
+      properties:
+        system_overview: {"type": "string"}
+        component_diagram: {"type": "string"}
+        data_flow: {"type": "string"}
+        infrastructure: {"type": "string"}
+    risks:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          risk_id: {"type": "string"}
+          description: {"type": "string"}
+          impact: {"type": "string", "enum": ["low", "medium", "high"]}
+          probability: {"type": "string", "enum": ["low", "medium", "high"]}
+          mitigation: {"type": "string"}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "new_requirements_received"
+    - "manual_planning_request"
+  next_agents:
+    - "plan-reviewer"
+  outputs:
+    - path: "docs/plans/{plan_id}/plan.md"
+      format: "markdown"
+    - path: "docs/plans/{plan_id}/plan.json"
+      format: "json"

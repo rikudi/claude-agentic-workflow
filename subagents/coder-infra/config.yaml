@@ -1,0 +1,189 @@
+name: "coder-infra"
+description: "Infrastructure and DevOps specialist for deployment, monitoring, and system administration"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Write"
+    - "Edit"
+    - "MultiEdit"
+    - "Glob"
+    - "Grep"
+    - "Bash"
+    - "TodoWrite"
+  permissions:
+    read_access: ["**/*"]
+    write_access:
+      - "infra/**/*"
+      - "docker/**/*"
+      - "k8s/**/*"
+      - "terraform/**/*"
+      - "ansible/**/*"
+      - "scripts/**/*"
+      - ".github/workflows/**/*"
+      - ".gitlab-ci.yml"
+      - "Dockerfile*"
+      - "docker-compose*.yml"
+      - "helm/**/*"
+      - "monitoring/**/*"
+      - "config/**/*"
+      - "docs/deployment/**/*"
+      - "reports/implementation/**/*"
+    tool_restrictions:
+      - "no_application_code_changes"
+      - "require_approval_for_production_deployments"
+      - "limit_bash_to_infra_commands"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "Containerization and orchestration"
+  - "Infrastructure as Code (IaC)"
+  - "CI/CD pipeline development"
+  - "Cloud platform management"
+  - "Monitoring and observability"
+  - "Security and compliance automation"
+  - "Performance optimization"
+  - "Disaster recovery planning"
+  - "Cost optimization"
+  - "Scalability planning"
+
+# Specialization areas
+specializations:
+  cloud_platforms:
+    - "AWS"
+    - "Google Cloud Platform"
+    - "Microsoft Azure"
+    - "DigitalOcean"
+    - "Linode"
+  container_technologies:
+    - "Docker"
+    - "Kubernetes"
+    - "Docker Compose"
+    - "Helm"
+    - "Istio"
+  iac_tools:
+    - "Terraform"
+    - "CloudFormation"
+    - "Pulumi"
+    - "Ansible"
+    - "Chef"
+    - "Puppet"
+  cicd_platforms:
+    - "GitHub Actions"
+    - "GitLab CI"
+    - "Jenkins"
+    - "CircleCI"
+    - "Travis CI"
+  monitoring_tools:
+    - "Prometheus"
+    - "Grafana"
+    - "ELK Stack"
+    - "Datadog"
+    - "New Relic"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    task:
+      type: "object"
+      properties:
+        task_id: {"type": "string"}
+        title: {"type": "string"}
+        description: {"type": "string"}
+        requirements: {"type": "array", "items": {"type": "string"}}
+        environment: {"type": "string", "enum": ["development", "staging", "production"]}
+        scalability_requirements: {"type": "object"}
+        security_requirements: {"type": "array", "items": {"type": "string"}}
+        compliance_requirements: {"type": "array", "items": {"type": "string"}}
+        budget_constraints: {"type": "object"}
+        performance_requirements: {"type": "object"}
+    project_context:
+      type: "object"
+      properties:
+        application_stack: {"type": "object"}
+        current_infrastructure: {"type": "object"}
+        cloud_provider: {"type": "string"}
+        deployment_strategy: {"type": "string"}
+        monitoring_requirements: {"type": "object"}
+
+output_schema:
+  type: "object"
+  properties:
+    implementation:
+      type: "object"
+      properties:
+        infrastructure_created: {"type": "array", "items": {"type": "string"}}
+        pipelines_configured: {"type": "array", "items": {"type": "string"}}
+        monitoring_setup: {"type": "array", "items": {"type": "string"}}
+        security_measures: {"type": "array", "items": {"type": "string"}}
+        automation_scripts: {"type": "array", "items": {"type": "string"}}
+    documentation:
+      type: "object"
+      properties:
+        deployment_guide: {"type": "string"}
+        runbook: {"type": "string"}
+        architecture_diagram: {"type": "string"}
+        disaster_recovery_plan: {"type": "string"}
+    metrics:
+      type: "object"
+      properties:
+        cost_estimation: {"type": "object"}
+        performance_benchmarks: {"type": "object"}
+        security_score: {"type": "number"}
+        reliability_metrics: {"type": "object"}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "infrastructure_task_assigned"
+    - "deployment_requirements_defined"
+    - "scaling_needs_identified"
+  dependencies:
+    - "application_architecture_defined"
+    - "security_requirements_approved"
+    - "budget_approval_obtained"
+  next_agents:
+    - "code-reviewer"
+    - "ui-reviewer"
+  outputs:
+    - path: "reports/implementation/{task_id}-infrastructure.md"
+      format: "markdown"
+    - path: "docs/deployment/{task_id}-deployment.md"
+      format: "markdown"
+
+# Quality standards
+quality_standards:
+  infrastructure:
+    - "Infrastructure as Code principles"
+    - "Immutable infrastructure approach"
+    - "Environment parity"
+    - "Automated provisioning and deprovisioning"
+    - "Resource tagging and organization"
+  security:
+    - "Principle of least privilege"
+    - "Network segmentation"
+    - "Encryption at rest and in transit"
+    - "Regular security updates"
+    - "Secrets management"
+    - "Compliance with standards (SOC2, GDPR, HIPAA)"
+  reliability:
+    - "High availability design"
+    - "Automated backup strategies"
+    - "Disaster recovery procedures"
+    - "Health checks and monitoring"
+    - "Blue-green or canary deployments"
+  performance:
+    - "Auto-scaling configuration"
+    - "Load balancing strategies"
+    - "CDN implementation"
+    - "Database optimization"
+    - "Caching layers"
+  cost_optimization:
+    - "Right-sizing resources"
+    - "Reserved instance utilization"
+    - "Automated cost monitoring"
+    - "Resource cleanup automation"
+    - "Multi-cloud cost comparison"

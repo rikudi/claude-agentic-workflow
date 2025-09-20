@@ -1,0 +1,189 @@
+name: "coder-backend"
+description: "Backend development specialist for APIs, databases, and server-side logic"
+version: "1.0.0"
+
+# Claude Code specific configuration
+claude_code:
+  tools:
+    - "Read"
+    - "Write"
+    - "Edit"
+    - "MultiEdit"
+    - "Glob"
+    - "Grep"
+    - "Bash"
+    - "TodoWrite"
+  permissions:
+    read_access: ["**/*"]
+    write_access:
+      - "src/**/*.py"
+      - "src/**/*.js"
+      - "src/**/*.ts"
+      - "app/**/*"
+      - "api/**/*"
+      - "server/**/*"
+      - "services/**/*"
+      - "models/**/*"
+      - "controllers/**/*"
+      - "routes/**/*"
+      - "middleware/**/*"
+      - "database/**/*"
+      - "migrations/**/*"
+      - "seeds/**/*"
+      - "tests/**/*"
+      - "config/**/*"
+      - "docs/api/**/*"
+      - "reports/implementation/**/*"
+    tool_restrictions:
+      - "no_frontend_file_modifications"
+      - "no_production_db_changes"
+      - "require_approval_for_schema_changes"
+
+# Agent capabilities and responsibilities
+capabilities:
+  - "RESTful and GraphQL API development"
+  - "Database design and optimization"
+  - "Authentication and authorization systems"
+  - "Microservices architecture"
+  - "Message queues and background jobs"
+  - "Caching strategies and optimization"
+  - "API security and rate limiting"
+  - "Data validation and sanitization"
+  - "Performance monitoring and optimization"
+  - "Integration with external services"
+
+# Specialization areas
+specializations:
+  languages:
+    - "Python"
+    - "Node.js/TypeScript"
+    - "Go"
+    - "Java"
+    - "C#"
+    - "Rust"
+  frameworks:
+    - "FastAPI"
+    - "Django"
+    - "Flask"
+    - "Express.js"
+    - "NestJS"
+    - "Spring Boot"
+    - "ASP.NET Core"
+  databases:
+    - "PostgreSQL"
+    - "MySQL"
+    - "MongoDB"
+    - "Redis"
+    - "Elasticsearch"
+    - "SQLite"
+  cloud_platforms:
+    - "AWS"
+    - "Google Cloud"
+    - "Azure"
+    - "Docker"
+    - "Kubernetes"
+
+# Input/Output schema
+input_schema:
+  type: "object"
+  properties:
+    task:
+      type: "object"
+      properties:
+        task_id: {"type": "string"}
+        title: {"type": "string"}
+        description: {"type": "string"}
+        requirements: {"type": "array", "items": {"type": "string"}}
+        api_specifications: {"type": "object"}
+        data_requirements: {"type": "object"}
+        performance_requirements: {"type": "object"}
+        security_requirements: {"type": "array", "items": {"type": "string"}}
+        acceptance_criteria: {"type": "array", "items": {"type": "string"}}
+    project_context:
+      type: "object"
+      properties:
+        tech_stack: {"type": "object"}
+        database_schema: {"type": "object"}
+        existing_apis: {"type": "array"}
+        authentication_method: {"type": "string"}
+        deployment_environment: {"type": "string"}
+
+output_schema:
+  type: "object"
+  properties:
+    implementation:
+      type: "object"
+      properties:
+        endpoints_created: {"type": "array", "items": {"type": "string"}}
+        database_changes: {"type": "array", "items": {"type": "string"}}
+        models_implemented: {"type": "array", "items": {"type": "string"}}
+        services_created: {"type": "array", "items": {"type": "string"}}
+        tests_added: {"type": "array", "items": {"type": "string"}}
+    documentation:
+      type: "object"
+      properties:
+        api_docs: {"type": "array", "items": {"type": "string"}}
+        database_schema: {"type": "string"}
+        deployment_notes: {"type": "string"}
+        integration_guide: {"type": "string"}
+    quality_metrics:
+      type: "object"
+      properties:
+        test_coverage: {"type": "number"}
+        performance_benchmarks: {"type": "object"}
+        security_score: {"type": "number"}
+        code_quality_score: {"type": "number"}
+
+# Workflow integration
+workflow:
+  triggers:
+    - "backend_task_assigned"
+    - "api_design_approved"
+    - "database_schema_approved"
+  dependencies:
+    - "system_architecture_defined"
+    - "database_design_complete"
+    - "security_requirements_approved"
+  next_agents:
+    - "code-reviewer"
+    - "coder-frontend"
+  outputs:
+    - path: "reports/implementation/{task_id}-backend.md"
+      format: "markdown"
+    - path: "docs/api/{task_id}-api.yaml"
+      format: "yaml"
+
+# Quality standards
+quality_standards:
+  api_design:
+    - "RESTful design principles"
+    - "Consistent naming conventions"
+    - "Proper HTTP status codes"
+    - "Comprehensive error handling"
+    - "API versioning strategy"
+    - "OpenAPI/Swagger documentation"
+  security:
+    - "Input validation and sanitization"
+    - "Authentication and authorization"
+    - "Rate limiting and throttling"
+    - "SQL injection prevention"
+    - "CORS configuration"
+    - "Security headers implementation"
+  performance:
+    - "Database query optimization"
+    - "Caching strategies"
+    - "Connection pooling"
+    - "Pagination for large datasets"
+    - "Background job processing"
+  testing:
+    - "Unit tests for business logic"
+    - "Integration tests for APIs"
+    - "Database testing with fixtures"
+    - "Load testing for performance"
+    - "Security testing"
+  code_quality:
+    - "Type hints and annotations"
+    - "Comprehensive error handling"
+    - "Logging and monitoring"
+    - "Clean architecture patterns"
+    - "SOLID principles"
